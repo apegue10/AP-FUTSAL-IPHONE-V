@@ -21,7 +21,12 @@
 .field input:focus,.field select:focus{outline:2px solid #3689e8;border-color:#3689e8}
 #player-actions{border-color:#3689e8}
 .view .tools button.primary{background:#286fc1}
-</style></head>
+</style>
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="AP FUTSAL">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+</head>
 <body>
 <header class="app-header"><div class="scoreboard">
 <div class="team-score"><div><div class="team-label" id="score-team-name">NOSOTROS</div><div id="score-nos" class="score">0</div></div><div><div class="score-buttons"><button class="primary" onclick="changeScore('nos',1)">+</button><button onclick="changeScore('nos',-1)">−</button></div><div class="fouls"><span>FALTAS</span><button onclick="changeFouls('nos',-1)">−</button><strong id="fouls-nos">0</strong><button class="blue" onclick="changeFouls('nos',1)">+</button></div></div></div>
@@ -1837,4 +1842,14 @@ load();
 try{renderAll()}catch(err){console.error('Error al iniciar la interfaz AP FUTSAL:',err)}
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&S.running){syncClock();lastPaintedSecond=null;renderClock();save()}});
 window.addEventListener('pageshow',()=>{if(S.running){syncClock();lastPaintedSecond=null;renderClock();save()}});
-</script></body></html>
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
+      .catch(err => console.warn('Error al activar el modo sin conexión:', err));
+  });
+}
+</script>
+</body>
+</html>
