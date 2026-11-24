@@ -1890,6 +1890,7 @@ try{renderAll()}catch(err){console.error('Error al iniciar la interfaz AP FUTSAL
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&S.running){syncClock();lastPaintedSecond=null;renderClock();save()}});
 window.addEventListener('pageshow',()=>{if(S.running){syncClock();lastPaintedSecond=null;renderClock();save()}});
 </script>
+  <script src="./cloud-sync.js"></script>
 <script>
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
