@@ -1,0 +1,14 @@
+{
+  "id": "./",
+  "name": "AP FUTSAL",
+  "short_name": "AP FUTSAL",
+  "description": "Gestión de banquillo, cronómetro, quintetos, estadísticas e historial de fútbol sala.",
+  "lang": "es-ES",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0b1220",
+  "theme_color": "#101827",
+  "icons": []
+}
