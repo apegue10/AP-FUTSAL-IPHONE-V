@@ -4,7 +4,10 @@ const CACHE_NAME = 'ap-futsal-iphone-v1';
 const APP_FILES = [
   './',
   './index.html',
-  './manifest.webmanifest'
+  './manifest.webmanifest',
+  './icons/ap-futsal-180.png',
+  './icons/ap-futsal-192.png',
+  './icons/ap-futsal-512.png'
 ];
 
 self.addEventListener('install', event => {
