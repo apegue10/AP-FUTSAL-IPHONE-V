@@ -4,6 +4,7 @@ const CACHE_NAME = 'ap-futsal-iphone-v2';
 const APP_FILES = [
   './',
   './index.html',
+  './cloud-sync.js',
   './manifest.webmanifest',
   './icons/ap-futsal-180.png',
   './icons/ap-futsal-192.png',
