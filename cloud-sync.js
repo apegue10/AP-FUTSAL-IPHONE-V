@@ -462,33 +462,60 @@
         encodeURIComponent(t.id) + '&select=payload'
       );
 
-      const shared = meta?.[0]?.payload?.shared;
+            // Compatibilidad con la sincronización Android anterior.
+      const legacyPayload = meta?.[0]?.payload || {};
+      const legacyState = legacyPayload.state;
 
-      if (shared) {
-        if (Array.isArray(shared.competitions)) {
-          S.competitions = [...new Set([
-            ...(S.competitions || []),
-            ...shared.competitions
-          ])];
-        }
+      // Recuperar también los partidos guardados en el formato antiguo.
+      if (Array.isArray(legacyState?.matchHistory)) {
+        legacyState.matchHistory.forEach(match => {
+          if (match && match.id != null && !byId.has(String(match.id))) {
+            byId.set(String(match.id), match);
+          }
+        });
+      }
 
-        if (shared.teamName) S.teamName = shared.teamName;
+      S.matchHistory = Array.from(byId.values());
 
-        if (Array.isArray(shared.template?.players)) {
-          localStorage.setItem(
-            TEMPLATE_KEY,
-            JSON.stringify(shared.template)
-          );
+      const shared = legacyPayload.shared || null;
 
-          shared.template.players.forEach(tp => {
-            const p = S.players.find(x => x.id === tp.id);
-            if (p) {
-              p.name = tp.name;
-              p.number = tp.number;
-              p.called = !!tp.called;
-            }
-          });
-        }
+      // Recuperar competiciones de cualquiera de los dos formatos.
+      const competitions = [
+        ...(Array.isArray(legacyState?.competitions) ? legacyState.competitions : []),
+        ...(Array.isArray(shared?.competitions) ? shared.competitions : [])
+      ];
+
+      if (competitions.length) {
+        S.competitions = [...new Set([
+          ...(S.competitions || []),
+          ...competitions
+        ])];
+      }
+
+      if (shared?.teamName || legacyState?.teamName) {
+        S.teamName = shared?.teamName || legacyState.teamName;
+      }
+
+      // Recuperar la plantilla, tanto del formato nuevo como del antiguo.
+      const templateToUse = shared?.template || legacyPayload.template;
+
+      if (Array.isArray(templateToUse?.players)) {
+        localStorage.setItem(
+          TEMPLATE_KEY,
+          JSON.stringify(templateToUse)
+        );
+
+        templateToUse.players.forEach(tp => {
+          const p = S.players.find(x => x.id === tp.id);
+
+          if (p) {
+            p.name = tp.name;
+            p.number = tp.number;
+            p.called = !!tp.called;
+          } else {
+            S.players.push({ ...tp });
+          }
+        });
       }
 
       save();
