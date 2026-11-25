@@ -309,7 +309,7 @@
       if (!id) throw new Error('No se recibió el identificador del equipo.');
 
       await loadTeam(id);
-      status('cloud-team-status', 'Te has unido al equipo correctamente.');
+      refreshStatus();
     } catch (e) {
       status('cloud-team-status', 'Error al unirte: ' + e.message);
     }
